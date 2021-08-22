@@ -8,7 +8,7 @@ class OpenVidu(object):
     This class provides an OpenVidu object configured by Flask.
     """
 
-    def __init__(self, app=None):
+    def __init__(self, app=None, **kwargs):
         """
         Initialize the OpenVidu object according to Flask config.
         Factory pattern is supported as well. See `init_app()`.
@@ -18,6 +18,7 @@ class OpenVidu(object):
         :param app: Optional Flask application to be bound.
         """
         self.app = app
+        self.options = kwargs
         if app:
             self.init_app(app)
 
@@ -47,7 +48,8 @@ class OpenVidu(object):
 
         return pyopenvidu.OpenVidu(
             current_app.config['OPENVIDU_URL'],
-            current_app.config['OPENVIDU_SECRET']
+            current_app.config['OPENVIDU_SECRET'],
+            **self.options
         )
 
     @property
